@@ -21,21 +21,28 @@
     <module>webapp</module>
   </modules>
 
+
   <distributionManagement>
+
+    <snapshotRepository>
+      <id>snapshots</id>
+      <url>http://localhost:8081/repository/maven-snapshots/</url>
+    </snapshotRepository>
     <site>
-      <id>site-server</id>
+      <id>maven-snapshots</id>
       <name>Test Project Site</name>
-      <url>file:///tmp/maven-project-site</url>
+      <url>http://localhost:8081/repository/maven-snapshots/</url>
     </site>
   </distributionManagement>
+
 
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
 
@@ -47,41 +54,40 @@
       </plugin>
 
       <plugin>
-        <artifactId>maven-site-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.8.1</version>
         <configuration>
-          <reportPlugins>
-            <plugin>
-              <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-              <artifactId>maven-jxr-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-              <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-              <artifactId>maven-pmd-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-              <artifactId>maven-surefire-report-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>findbugs-maven-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>taglist-maven-plugin</artifactId>
-            </plugin>
-          </reportPlugins>
+          <skip>true</skip>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.5.1</version>
+        <executions>
+          <execution>
+            <id>default-deploy</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <serverId>nexus</serverId>
+          <nexusUrl>http://localhost:8081</nexusUrl>
+          <skipStaging>true</skipStaging>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.4.0.905</version>
+      </plugin>
+
     </plugins>
 
     <pluginManagement>
@@ -203,8 +209,39 @@
         <version>1.8.5</version>
         <scope>test</scope>
       </dependency>
+
+      <!-- Added this for Sonarqube Analysis -->
+      <dependency>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.4.0.905</version>
+      </dependency>
+
+
+
     </dependencies>
   </dependencyManagement>
+
+
+  <profiles>
+    <profile>
+      <id>sonar</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <!-- Optional URL to server. Default value is http://localhost:9000 -->
+        <sonar.host.url> http://localhost:9000 </sonar.host.url>
+        <!--  <sonar.jdbc.url>your database URL</sonar.jdbc.url>
+       <sonar.jdbc.driver>Your database driver</sonar.jdbc.driver>
+       <sonar.jdbc.username>DB username</sonar.jdbc.username>
+       <sonar.jdbc.password>db password</sonar.jdbc.password>        -->
+
+      </properties>
+    </profile>
+  </profiles>
+
+  <!--
 
   <scm>
     <connection>scm:git:git@github.com:jleetutorial/maven-project.git</connection>
@@ -213,8 +250,12 @@
     <url>http://github.com/jleetutorial/maven-project</url>
   </scm>
 
+
+
   <prerequisites>
     <maven>3.0.3</maven>
   </prerequisites>
+
+   -->
 
 </project>
