@@ -25,11 +25,11 @@
   <distributionManagement>
 
     <snapshotRepository>
-      <id>snapshots</id>
+      <id>nexus-snapshots</id>
       <url>http://localhost:8081/repository/maven-snapshots/</url>
     </snapshotRepository>
     <site>
-      <id>maven-snapshots</id>
+      <id>nexus-snapshots</id>
       <name>Test Project Site</name>
       <url>http://localhost:8081/repository/maven-snapshots/</url>
     </site>
@@ -76,7 +76,7 @@
           </execution>
         </executions>
         <configuration>
-          <serverId>nexus</serverId>
+          <serverId>nexus-snapshots</serverId>
           <nexusUrl>http://localhost:8081</nexusUrl>
           <skipStaging>true</skipStaging>
         </configuration>
@@ -217,10 +217,16 @@
         <version>3.4.0.905</version>
       </dependency>
 
-
-
     </dependencies>
   </dependencyManagement>
+
+
+  <repositories>
+    <repository>
+      <id>maven-snapshots</id>
+      <url>http://localhost:8081/repository/maven-snapshots/</url>
+    </repository>
+  </repositories>
 
 
   <profiles>
@@ -239,23 +245,31 @@
 
       </properties>
     </profile>
+
+    <profile>
+      <id>snapshot</id>
+      <repositories>
+        <repository>
+          <id>nexus-snapshots</id>
+          <name>your custom repo</name>
+          <url>http://localhost:8081/repository/maven-snapshots/</url>
+        </repository>
+
+      </repositories>
+    </profile>
+    <profile>
+      <id>release</id>
+      <repositories>
+        <repository>
+          <id>nexus-snapshots</id>
+          <name>your custom repo</name>
+          <url>http://localhost:8081/repository/maven-release/</url>
+        </repository>
+      </repositories>
+    </profile>
+
+
+
   </profiles>
-
-  <!--
-
-  <scm>
-    <connection>scm:git:git@github.com:jleetutorial/maven-project.git</connection>
-    <developerConnection>scm:git:git@github.com:jleetutorial/maven-project.git</developerConnection>
-    <tag>HEAD</tag>
-    <url>http://github.com/jleetutorial/maven-project</url>
-  </scm>
-
-
-
-  <prerequisites>
-    <maven>3.0.3</maven>
-  </prerequisites>
-
-   -->
 
 </project>
