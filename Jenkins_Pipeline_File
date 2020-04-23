@@ -31,6 +31,15 @@ pipeline {
             sh 'mvn deploy -P release'     
           }
       }
+
+      stage('Clear from Temp Folder') {
+        steps {
+          script {
+           input message: 'User input required',
+                parameters: [choice(name: 'Clear from Temp Folder', choices: 'no\nyes', description: 'Choose "yes" if you have cleared Temp folder')]
+          }
+        }
+    }
       
       stage('Ansible- Pull pkg from Nexus'){
           steps{
