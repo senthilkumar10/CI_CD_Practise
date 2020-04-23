@@ -7,11 +7,11 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
-  tasks:
-    - name: Remove file
-      file:
-        path: /home/senthil/Documents/temp/
-        state: absent 
+  # tasks:
+  #   - name: Remove file
+  #     file:
+  #       path: /home/senthil/Documents/temp/
+  #       state: absent 
    
 
     - name: Pull Maven Artifact from Repo
