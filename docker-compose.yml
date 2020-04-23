@@ -11,5 +11,6 @@ services:
       dockerfile: Tomcat_Dockerfile
     ports:
       - 8090:8080
+    container_name: tomcat 
     volumes:
       - /home/senthil/Documents/temp:/usr/local/tomcat/webapps      

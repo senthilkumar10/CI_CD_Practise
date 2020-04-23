@@ -1,0 +1,50 @@
+pipeline {
+   agent any
+
+   tools {
+      // Install the Maven version configured as "M3" and add it to the path.
+      maven "M3"
+   }
+
+   stages {
+      stage('SCM Checkout') {
+          steps{
+             // Get some code from a GitHub repository
+            git 'https://github.com/senthilkumar10/CI_CD_Practise.git' 
+          }
+      }
+      
+      stage('Maven Clean & JUnit Test'){
+          steps{
+            sh 'mvn clean install'     
+          }
+      }
+      
+      stage('Sonarqube - Static Code Analysis  '){
+          steps{
+            sh 'mvn sonar:sonar'     
+          }
+      }
+      
+      stage('Push Pkg to Nexus Repo'){
+          steps{
+            sh 'mvn deploy -P release'     
+          }
+      }
+      
+      stage('Ansible- Pull pkg from Nexus'){
+          steps{
+            sh 'ansible-playbook Maven_ansible_playbook.yml'     
+          }  
+      }
+      
+      stage('Deply Pkg in Tomcat Container'){
+          steps{
+              sh 'docker-compose rm -fsv tomcat'
+              sh 'docker-compose up --build --force-recreate --no-deps -d tomcat'
+          }
+      }
+                
+      
+   }
+}
