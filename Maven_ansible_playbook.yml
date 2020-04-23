@@ -1,0 +1,25 @@
+---
+- name: Pull Lastest War file and deploy in tomcat server
+  hosts: localhost
+
+  
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+    - name: Remove file
+      file:
+        path: /home/senthil/Documents/temp/
+        state: absent 
+   
+
+    - name: Pull Maven Artifact from Repo
+      maven_artifact:
+        group_id: com.example.maven-project
+        artifact_id: webapp
+        extension: war
+        repository_url: 'http://localhost:8081/repository/maven-snapshots'
+        username: admin
+        password: admin123
+        dest: /home/senthil/Documents/temp/       

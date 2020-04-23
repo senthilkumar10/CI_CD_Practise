@@ -1,0 +1,6 @@
+# Pull base image 
+From ubuntu
+
+# Maintainer 
+LABEL maintainer="senthilkumar10@gmail.com" 
+RUN apt update; apt install python ansible openssh-client vim iputils-ping -y

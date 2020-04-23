@@ -5,17 +5,11 @@ services:
     image: sonarqube
     ports:
       - 9000:9000
-
-  nexus:
-    image: sonatype/nexus3
-    ports:
-      - 8081:8081    
-
   tomcat:
     build: 
       context: .
       dockerfile: Tomcat_Dockerfile
     ports:
-      - 8080:8080
-
-  
+      - 8090:8080
+    volumes:
+      - /home/senthil/Documents/temp:/usr/local/tomcat/webapps      
