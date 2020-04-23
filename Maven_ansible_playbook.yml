@@ -7,7 +7,7 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
-  # tasks:
+  tasks:
   #   - name: Remove file
   #     file:
   #       path: /home/senthil/Documents/temp/
